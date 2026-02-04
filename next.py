@@ -1,29 +1,25 @@
-from func import cek_sistem
-from func import cek_situs
+from func import cek_sistem, cek_situs
 
-list_tujuan = ["music.youtube.com", "github.com"]
+daftar_situs = ["google.com", "github.com", "nonexistentsite.xyz"]
 
 while True:
-    print("\n=== DEVOPS MINI TOOL ===")
-    print("1. Cek Info Sistem")
-    print("2. Cek Koneksi Website")
-    print("3. Keluar")
-    print("4. Cek Log_File")
-
-    pilihan = input("pilihan menu (1/2/3/4): ")
+    print("======= Menu =======")
+    print("1. Cek Sistem")
+    print("2. Cek Situs")
+    print("3. cek log file")
+    print("4. Keluar")
+    pilihan = input("Pilih menu (1/2/3/4): ")
 
     if pilihan == "1":
         cek_sistem()
     elif pilihan == "2":
-        cek_situs(list_tujuan)
+        cek_situs(daftar_situs)
     elif pilihan == "3":
-        print("program mati")
-        break
-    elif pilihan == "4":
         with open("log_server.txt", "r") as f:
             isi_log = f.read()
-            print("\n--- ISI LOG FILE ---")
+            print("\n=== Isi Log File ===")
             print(isi_log)
-            print("--------------------\n")
-    else:
-        print("pilihan tidak dikenal")
+            print("======================")
+    elif pilihan == "4":
+        print("Program berakhir")
+        break

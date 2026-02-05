@@ -8,7 +8,18 @@ servers = {
 
 def tambah_server():
     nama_baru = input("Masukkan nama server baru: ").strip().lower()
+
+    if nama_baru in servers:
+        print(f"\n ERROR: Server dengan nama {nama_baru} sudah terdaftar dengan IP {servers[nama_baru]}.")
+        return
+
     ip_baru = input(f"Masukkan IP untuk {nama_baru}: ").strip()
+
+    if ip_baru in servers.values():
+        pemilik = [nama for nama, ip in servers.items() if ip == ip_baru][0]
+        print(f"\n ERROR: IP {ip_baru} sudah digunakan oleh server lain.")
+        return
+
     servers[nama_baru] = ip_baru
     print(f"\nServer {nama_baru} dengan IP {ip_baru} telah ditambahkan.")
 

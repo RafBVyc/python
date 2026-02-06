@@ -1,4 +1,4 @@
-from func import cek_sistem, cek_situs
+from func_3 import cek_sistem, cek_situs
 
 daftar_situs = ["google.com", "github.com", "nonexistentsite.xyz"]
 

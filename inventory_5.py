@@ -1,12 +1,8 @@
 # Database server sederhana dalam bentuk dictionary
 
-from func_3 import tambah_server, cari_dan_tambah_server, tampilkan_inventory
+from func_3 import tambah_server, cari_dan_tambah_server, tampilkan_inventory, load_data, save_data
 
-servers = {
-    "web" : "192.168.1.10",
-    "db"  : "192.168.1.20",
-    "app" : "192.168.1.30"
-}
+servers = load_data()
 
 while True:    
     print("==== pilihan menu =====")

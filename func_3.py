@@ -1,5 +1,6 @@
 import platform
 import os
+import json
 
 def cek_sistem():
     print(f"OS: {platform.system()} | Arsitektur: {platform.machine()}")
@@ -11,6 +12,18 @@ def cek_situs(daftar_situs):
             print(f"website {s} Online")
         else:
             print(f"website {s} Offline")
+
+def load_data():
+    try:
+        with open("servers.json", "r") as f:
+            servers = json.load(f)
+    except FileNotFoundError:
+        servers = {}
+    return servers
+
+def save_data(servers):
+    with open("servers.json", "w") as f:
+        json.dump(servers, f, indent=4)
 
 def tambah_server(servers):
     nama_baru = input("Masukkan nama server baru: ").strip().lower()

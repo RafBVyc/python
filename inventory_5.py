@@ -18,13 +18,13 @@ while True:
         break
         
     if pilihan == "1":
-        tambah_server()
+        tambah_server(servers)
     elif pilihan == "2":
-        cari_dan_tambah_server()
+        cari_dan_tambah_server(servers)
     elif pilihan == "3":
         print("\nProgram berakhir")
         break
     elif pilihan == "4":
-        tampilkan_inventory()
+        tampilkan_inventory(servers)
     else:
         print("\nPilihan tidak valid, silakan coba lagi.\n")

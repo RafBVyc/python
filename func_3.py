@@ -24,51 +24,50 @@ def load_data():
     return servers
 
 #fungsi untuk menyimpan data server ke file JSON
-def save_data(servers):
+def save_data(data):
     with open("servers.json", "w") as f:
-        json.dump(servers, f, indent=4)
+        json.dump(data, f, indent=4)
         
-#
-def tambah_server(servers):
+# fungsi untuk menambah server baru
+def tambah_server(data):
     nama_baru = input("Masukkan nama server baru: ").strip().lower()
-
-    if nama_baru in servers:
-        print(f"\n ERROR: Server dengan nama {nama_baru} sudah terdaftar dengan IP {servers[nama_baru]}.")
+    if nama_baru in data:
+        print(f"\n ERROR: Server dengan nama {nama_baru} sudah terdaftar dengan IP {data[nama_baru]}.")
         return
 
     ip_baru = input(f"Masukkan IP untuk {nama_baru}: ").strip()
-
-    if ip_baru in servers.values():
-        for nama, ip in servers.items():
+    if ip_baru in data.values():
+        for nama, ip in data.items():
             if ip == ip_baru:
                 print(f"\n ERROR: IP {ip_baru} sudah terdaftar untuk server {nama}.")
                 break
         return
 
-    servers[nama_baru] = ip_baru
-    save_data(servers)
+    data[nama_baru] = ip_baru
+    save_data(data)
     print(f"\nServer {nama_baru} dengan IP {ip_baru} telah ditambahkan.")
 
 
-
-def cari_dan_tambah_server(servers):
+# fungsi untuk mencari server dan menambahkannya jika tidak ditemukan
+def cari_dan_tambah_server(data):
     print("\n=== Pencarian ===")
     cari = input("ketik nama server yang ingin dicek: ").strip().lower()
 
-    if cari in servers:
-        print(f"\nditemukan, IP {cari} adalah {servers[cari]}\n")   
+    if cari in data:
+        print(f"\nditemukan, IP {cari} adalah {data[cari]}\n")   
     else:
         print(f"maaf, {cari} belum terdaftar di server...")
         tambah_kah = input("apa mau ditambahkan sekarang? (y/n): ")
         if tambah_kah == "y":
             ip_tambahan = input(f"masukkan IP untuk {cari}: ")
-            servers[cari] = ip_tambahan
-            save_data(servers)
+            data[cari] = ip_tambahan
+            save_data(data)
             print(f"\nserver {cari} sudah ditambahkan...\n")
         else:
             print("oke, tidak jadi ditambahkan.\n")
 
-def tampilkan_inventory(servers):      
+# fungsi untuk menampilkan inventory server
+def tampilkan_inventory(data):
     print("=== Inventory Sekarang ===")
-    for nama, ip in servers.items():
+    for nama, ip in data.items():
         print(f"- {nama} : {ip}")

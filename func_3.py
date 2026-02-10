@@ -1,6 +1,7 @@
 import platform
 import os
-import json
+import json 
+from datetime import datetime
 
 #fungsi untuk mengecek sistem operasi dan arsitektur
 def cek_sistem():
@@ -45,7 +46,8 @@ def tambah_server(data):
 
     data[nama_baru] = ip_baru
     save_data(data)
-    print(f"\nServer {nama_baru} dengan IP {ip_baru} telah ditambahkan.")
+    tulis_log(f"Menambahkan server baru: {nama_baru} dengan IP {ip_baru}")
+    print(f"\nServer {nama_baru} dengan IP {ip_baru} berhasil disimpan.")
 
 
 # fungsi untuk mencari server dan menambahkannya jika tidak ditemukan
@@ -62,6 +64,7 @@ def cari_dan_tambah_server(data):
             ip_tambahan = input(f"masukkan IP untuk {cari}: ")
             data[cari] = ip_tambahan
             save_data(data)
+            tulis_log(f"Menambahkan server baru: {cari} dengan IP {ip_tambahan}")
             print(f"\nserver {cari} sudah ditambahkan...\n")
         else:
             print("oke, tidak jadi ditambahkan.\n")
@@ -71,3 +74,11 @@ def tampilkan_inventory(data):
     print("=== Inventory Sekarang ===")
     for nama, ip in data.items():
         print(f"- {nama} : {ip}")
+
+def tulis_log(pesan):
+    # Mengambil waktu saat ini dengan format: Tahun-Bulan-Hari Jam:Menit:Detik
+    waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # menulis ke file activity.log
+    with open("activity.log", "a") as f:
+        f.write(f"[{waktu_sekarang}] {pesan}\n")

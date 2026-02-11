@@ -31,18 +31,31 @@ def save_data(data):
         
 # fungsi untuk menambah server baru
 def tambah_server(data):
-    nama_baru = input("Masukkan nama server baru: ").strip().lower()
-    if nama_baru in data:
-        print(f"\n ERROR: Server dengan nama {nama_baru} sudah terdaftar dengan IP {data[nama_baru]}.")
-        return
+    while True:
+        nama_baru = input("Masukkan nama server baru: ").strip().lower()
+        if not nama_baru:
+            print("Nama server tidak boleh kosong. Silakan coba lagi.")
+            continue
+        if nama_baru in data:
+            print(f"\nERROR: Server dengan nama {nama_baru} sudah terdaftar dengan IP {data[nama_baru]}.")
+            continue
+        break
 
-    ip_baru = input(f"Masukkan IP untuk {nama_baru}: ").strip()
-    if ip_baru in data.values():
-        for nama, ip in data.items():
-            if ip == ip_baru:
-                print(f"\n ERROR: IP {ip_baru} sudah terdaftar untuk server {nama}.")
-                break
-        return
+    while True:
+        ip_baru = input(f"Masukkan IP untuk {nama_baru}: ").strip()
+        if not ip_baru:
+            print("IP tidak boleh kosong. Silakan coba lagi.")
+            continue
+        if ip_baru.count(".") != 3 :
+            print("Format IP tidak valid. Pastikan formatnya seperti 192.168.1.1")
+            continue
+        if ip_baru in data.values():
+            for nama, ip in data.items():
+                if ip == ip_baru:
+                    print(f"\n ERROR: IP {ip_baru} sudah terdaftar untuk server {nama}.")
+                    break
+            continue
+        break
 
     data[nama_baru] = ip_baru
     save_data(data)

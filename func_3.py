@@ -88,6 +88,23 @@ def tampilkan_inventory(data):
     for nama, ip in data.items():
         print(f"- {nama} : {ip}")
 
+# fungsi untuk menghapus server dari inventory
+def hapus_server(data):
+    print("\n=== HAPUS SERVER ===")
+    nama_hapus = input("Masukkan nama server yang ingin dihapus: ").strip().lower()
+    if nama_hapus in data:
+        ip_server = data[nama_hapus]
+        konfirmasi = input(f"Apa anda yakin menghapus server {nama_hapus} (y/n) : ")
+        if konfirmasi.lower() == "y":
+            del data[nama_hapus]
+            save_data()
+            tulis_log(f"Server {nama_hapus} dengan IP {ip_server} dihapus.")
+            print(f"\nServer {nama_hapus} berhasil dihapus.\n")
+        else:
+            print("Penghapusan dibatalkan.\n")
+    else:
+        print(f"\nServer {nama_hapus} tidak ditemukan dalam inventory.\n")
+
 def tulis_log(pesan):
     # Mengambil waktu saat ini dengan format: Tahun-Bulan-Hari Jam:Menit:Detik
     waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

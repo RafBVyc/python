@@ -1,9 +1,11 @@
 # Database server sederhana dalam bentuk dictionary
 
 
-from func_3 import tambah_server, cari_dan_tambah_server, tampilkan_inventory, load_data, save_data
+from func_3 import tambah_server, cari_dan_tambah_server, tampilkan_inventory, load_data, hapus_server
 
 inventory_data = load_data()
+
+
 
 while True:
     print("==== pilihan menu =====")
@@ -11,6 +13,7 @@ while True:
     print("2. Pencarian Server ")
     print("3. Keluar")
     print("4. Tampilkan Inventory")
+    print("5. Hapus Server")
 
     try:
         pilihan = input("Pilih menu (1/2/3/4): ")
@@ -27,5 +30,7 @@ while True:
         break
     elif pilihan == "4":
         tampilkan_inventory(inventory_data)
+    elif pilihan == "5":
+        hapus_server(inventory_data)
     else:
         print("\nPilihan tidak valid, silakan coba lagi.\n")

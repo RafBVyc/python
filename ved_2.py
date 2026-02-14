@@ -14,13 +14,6 @@ print(f"--- PENGECEKAN WEB ---")
 #     else:
 #         print(f"{w} : offline")
 
-# code from Gemini
-# for w in website:
-#     respons = os.system(f"ping -c 1 {w} > /dev/null 2>&1")
-#     # .ljust(15) artinya berikan ruang 15 karakter agar rapi
-#     status = "ONLINE ✅" if respons == 0 else "OFFLINE ❌"
-#     print(f"{w.ljust(15)} : {status}")
-
 #another code from gemini
 with open("log_server.txt", "a") as file:
     for w in website:

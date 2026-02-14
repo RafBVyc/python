@@ -105,6 +105,7 @@ def hapus_server(data):
     else:
         print(f"\nServer {nama_hapus} tidak ditemukan dalam inventory.\n")
 
+# fungsi untuk pencatatan log
 def tulis_log(pesan):
     # Mengambil waktu saat ini dengan format: Tahun-Bulan-Hari Jam:Menit:Detik
     waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -112,3 +113,12 @@ def tulis_log(pesan):
     # menulis ke file activity.log
     with open("activity.log", "a") as f:
         f.write(f"[{waktu_sekarang}] {pesan}\n")
+
+# fungsi untuk pengecekan status website
+def cek_situs_input():
+    website = input("\nmasukkan nama situs yang ingin di-cek (contoh: google.com): ")
+    respons = os.system(f"ping -c 1 {website} > /dev/null 2>&1  ")
+
+    STATUS = "ONLINE" if respons == 0 else "OFFLINE"
+
+    print(f"{website}: {STATUS}")

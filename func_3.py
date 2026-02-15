@@ -3,6 +3,13 @@ import os
 import json 
 from datetime import datetime
 
+# Kode Warna ANSI
+HIJAU = "\033[92m"
+MERAH = "\033[91m"
+KUNING = "\033[93m"
+RESET = "\033[0m"  # Kembali ke warna normal
+BOLD = "\033[1m"
+
 #fungsi untuk mengecek sistem operasi dan arsitektur
 def cek_sistem():
     print(f"OS: {platform.system()} | Arsitektur: {platform.machine()}")
@@ -122,3 +129,24 @@ def cek_situs_input():
     STATUS = "ONLINE" if respons == 0 else "OFFLINE"
 
     print(f"{website}: {STATUS}")
+
+#  fungsi untuk melakukan pengecekan atau ping ke 
+def cek_status_server(inventory):
+    print("\n=== SEDANG MEMERIKSA STATUS SERVER ===")
+
+    if not inventory:
+        print(f"{KUNING}inventory kosong, tidak ada yang bisa di-cek{RESET}")
+        return
+    
+    for nama, ip in inventory.items():
+        response = os.system(f"ping -c 1 -W 1 {ip} > /dev/null 2>&1")
+
+        if response == 0:
+            status = f"{HIJAU}ONLINE / UP{RESET}"
+        else:
+            status = f"{MERAH}OFFLINE / DOWN{RESET}"
+
+        print(f"[{BOLD}{nama:15}{RESET}] {ip:15} -> {status}")        
+    
+    tulis_log("CHECK: Performed status check on all servers.")
+

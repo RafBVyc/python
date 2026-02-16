@@ -36,7 +36,7 @@ def save_data(data):
     with open("servers.json", "w") as f:
         json.dump(data, f, indent=4)
         
-# fungsi untuk menambah server baru
+# fungsi untuk menambah server zbaru
 def tambah_server(data):
     while True:
         nama_baru = input("Masukkan nama server baru: ").strip().lower()
@@ -130,7 +130,7 @@ def cek_situs_input():
 
     print(f"{website}: {STATUS}")
 
-#  fungsi untuk melakukan pengecekan atau ping ke 
+#  fungsi untuk melakukan pengecekan atau ping ke server
 def cek_status_server(inventory):
     print("\n=== SEDANG MEMERIKSA STATUS SERVER ===")
 

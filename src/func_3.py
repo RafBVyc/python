@@ -25,7 +25,7 @@ def cek_situs(daftar_situs):
 #fungsi untuk memuat data server dari file JSON
 def load_data():
     try:
-        with open("servers.json", "r") as f:
+        with open("data/servers.json", "r") as f:
             servers = json.load(f)
     except FileNotFoundError:
         servers = {}
@@ -33,7 +33,7 @@ def load_data():
 
 #fungsi untuk menyimpan data server ke file JSON
 def save_data(data):
-    with open("servers.json", "w") as f:
+    with open("data/servers.json", "w") as f:
         json.dump(data, f, indent=4)
         
 # fungsi untuk menambah server zbaru

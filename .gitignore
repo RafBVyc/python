@@ -1,0 +1,19 @@
+# Abaikan folder log dan isinya
+logs/
+*.log
+
+# Abaikan data inventory (opsional, jika ingin data lokal tetap privat)
+# data/servers.json
+
+# Abaikan cache Python agar tidak mengotori repo
+__pycache__/
+*.pyc
+
+# Abaikan folder virtual environment (jika ada)
+.venv/
+venv/
+env/
+
+# Abaikan file sampah sistem operasi
+.DS_Store
+Thumbs.db

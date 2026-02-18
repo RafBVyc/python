@@ -5,6 +5,10 @@ logs/
 # Abaikan data inventory (opsional, jika ingin data lokal tetap privat)
 # data/servers.json
 
+# Abaikan seluruh folder eksperimen dan arsip
+experiments/
+archive/
+
 # Abaikan cache Python agar tidak mengotori repo
 __pycache__/
 *.pyc

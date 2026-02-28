@@ -1,13 +1,27 @@
 import os
-import json
+import sqlite3
 import platform
 from datetime import datetime
 
 class ServerManager:
-    def __init__(self, data_file="data/servers.json", log_file="logs/activity.log"):
+    def __init__(self, data_file="data/servers.json", log_file="logs/activity.log", db_path="data/inventory.db"):
         self.data_file = data_file
         self.log_file = log_file
-        self.inventory = self._load_data()
+        self.db_path = db_path
+        # self.inventory = self._load_data()
+
+    def _init_db(self):
+        """Menjamin tabel 'servers' ada di database"""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS servers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                name TEXT UNIQUE NOT NULL,
+                ip TEXT NOT NULL      
+                )
+            """)
+            conn.commit()
 
     def _load_data(self):
         """Internal method to load JSON data."""
@@ -35,12 +49,16 @@ class ServerManager:
     def display_inventory(self):
         """Shows all registered servers."""
         print("\n=== Current Inventory ===")
-        if not self.inventory:
-            print("\nInventory is empty.")
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.execute("SELECT name, ip FROM servers")
+            rows = cursor.fetchall()
+        
+        if not rows:
+            print("inventory is empty")
         else:
-            for name, ip in self.inventory.items():
-                print(f"- {name:15} : {ip}")
-
+            for row in rows:
+                print(f"- {row:15} : {row}")
+                
     def add_server(self):
         """Logic to add a new server with validation."""
         while True:

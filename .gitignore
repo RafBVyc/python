@@ -3,7 +3,8 @@ logs/
 *.log
 
 # Abaikan data inventory (opsional, jika ingin data lokal tetap privat)
-# data/servers.json
+data/servers.json
+data/inventory.db
 
 # Abaikan seluruh folder eksperimen dan arsip
 experiments/

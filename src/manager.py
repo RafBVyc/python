@@ -62,39 +62,55 @@ class ServerManager:
     def add_server(self):
         """Logic to add a new server with validation."""
         while True:
-            name = input("Enter new server name: ").strip().lower()
-            if not name:
+            new_name = input("Enter new server name: ").strip().lower()
+            if not new_name:
                 print("\nName cannot be empty.")
-                continue
-            if name in self.inventory:
-                print(f"\nError: {name} is already registered.")
                 continue
             break
 
         while True:
-            ip = input(f"Enter IP for {name}: ").strip()
-            if not ip or ip.count(".") != 3:
+            new_ip = input(f"Enter IP for {new_name}: ").strip()
+            if not new_ip or new_ip.count(".") != 3:
                 print("\nInvalid IP format (e.g., 192.168.1.1).")
                 continue
             break
 
-        self.inventory[name] = ip
-        self._save_data()
-        self.write_log(f"ADDED: {name} ({ip})")
-        print(f"\nServer {name} added successfully.")
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO servers (name, ip) VALUES (?, ?)", (new_name, new_ip))
+                conn.commit()
+
+            print(f"\nServer {new_name} added successfully to database.")
+            self.write_log(f"ADDED: {new_name} ({new_ip})")
+
+        except sqlite3.IntegrityError:
+            print(f"Error: Server {new_name} already exists in database!")
 
     def delete_server(self):
         """Removes a server from inventory."""
-        name = input("Enter server name to delete: ").strip().lower()
-        if name in self.inventory:
-            confirm = input(f"Delete {name}? (y/n): ").lower()
-            if confirm == "y":
-                ip = self.inventory.pop(name)
-                self._save_data()
-                self.write_log(f"DELETED: {name} ({ip})")
-                print(f"\nServer {name} removed.")
-        else:
-            print(f"\nServer {name} not found.")
+        del_name = input("Enter server name to delete: ").strip().lower()
+        confirm = input(f"Delete {del_name}? (y/n): ").lower()
+        if confirm == "y":
+            try:
+                with sqlite3.connect(self.db_path) as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("DELETE FROM servers WHERE name = ?", (del_name,))
+
+                    if cursor.rowcount > 0:
+                        conn.commit()
+                        print(f"\nServer '{del_name}' deleted successfully.")
+                        self.write_log(f"DELETED: {del_name}")
+                    else:
+                        print(f"\nError: Server '{del_name}' not found in database.")
+
+            except sqlite3.Error as e:
+                print(f"Database error: {e}")
+    
+
+
+
+
 
     def check_status(self):
         """Pings all servers in the inventory."""
@@ -103,10 +119,10 @@ class ServerManager:
             print("Nothing to check.")
             return
 
-        for name, ip in self.inventory.items():
+        for new_name, new_ip in self.inventory.items():
             # Ping command for linux terminal
-            response = os.system(f"ping -c 1 -W 1 {ip} > /dev/null 2>&1")
+            response = os.system(f"ping -c 1 -W 1 {new_ip} > /dev/null 2>&1")
             status = "ONLINE" if response == 0 else "OFFLINE"
-            print(f"[{name:15}] {ip:15} -> {status}")
+            print(f"[{new_name:15}] {new_ip:15} -> {status}")
         
         self.write_log("STATUS CHECK: Performed on all servers.")

@@ -23,18 +23,11 @@ class ServerManager:
             """)
             conn.commit()
 
-    def _load_data(self):
+    def _get_all_servers(self):
         """Internal method to load JSON data."""
-        try:
-            with open(self.data_file, "r") as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return {}
-
-    def _save_data(self):
-        """Internal method to save data to JSON."""
-        with open(self.data_file, "w") as f:
-            json.dump(self.inventory, f, indent=4)
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.execute("SELECT name, ip FROM servers")
+            return cursor.fetchall()
 
     def write_log(self, message):
         """Records activity to the log file."""
@@ -47,17 +40,14 @@ class ServerManager:
         print(f"\nOS: {platform.system()} | Architecture: {platform.machine()}\n")
 
     def display_inventory(self):
-        """Shows all registered servers."""
         print("\n=== Current Inventory ===")
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.execute("SELECT name, ip FROM servers")
-            rows = cursor.fetchall()
+        rows = self._get_all_servers()
         
         if not rows:
             print("inventory is empty")
         else:
-            for row in rows:
-                print(f"- {row:15} : {row}")
+            for name, ip in rows:
+                print(f"- {name:15} : {ip}")
                 
     def add_server(self):
         """Logic to add a new server with validation."""
@@ -106,20 +96,17 @@ class ServerManager:
 
             except sqlite3.Error as e:
                 print(f"Database error: {e}")
-    
-
-
-
-
 
     def check_status(self):
         """Pings all servers in the inventory."""
         print("\n=== Checking Server Status ===")
-        if not self.inventory:
-            print("Nothing to check.")
+        rows = self._get_all_servers()
+
+        if not rows:
+            print("Nothing to check. Add a server first")
             return
 
-        for new_name, new_ip in self.inventory.items():
+        for new_name, new_ip in rows:
             # Ping command for linux terminal
             response = os.system(f"ping -c 1 -W 1 {new_ip} > /dev/null 2>&1")
             status = "ONLINE" if response == 0 else "OFFLINE"

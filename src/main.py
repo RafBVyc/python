@@ -5,13 +5,13 @@ def main():
     app = ServerManager()
 
     while True:
-        print("==== Menu Options =====")
+        print("\n==== Menu Options =====")
         print("1. Add New Server")
-        print("3. Check All Server Status")
-        print("4. Show Inventory")
-        print("5. Delete Server")
-        print("6. Check System")
-        print("7. Exit")
+        print("2. Check All Server Status")
+        print("3. Show Inventory")
+        print("4. Delete Server")
+        print("5. Check System")
+        print("6. Exit")
 
         try:
             choice = input("Select menu (1/2/3/4/5/6/7): ")
@@ -20,15 +20,15 @@ def main():
             break
         if choice == "1":
             app.add_server()
-        elif choice == "3":
+        elif choice == "2":
             app.check_status()
-        elif choice == "4":
+        elif choice == "3":
             app.display_inventory()
-        elif choice == "5":
+        elif choice == "4":
             app.delete_server()
-        elif choice == "6":
+        elif choice == "5":
             app.check_system()
-        elif choice == "7":
+        elif choice == "6":
             print("\nProgram stopped")
             break
         else:

@@ -8,10 +8,11 @@ class ServerManager:
         self.data_file = data_file
         self.log_file = log_file
         self.db_path = db_path
+        self._init_db()  # Ensure DB and table are initialized
         # self.inventory = self._load_data()
 
     def _init_db(self):
-        """Menjamin tabel 'servers' ada di database"""
+        """Ensire 'servers' table available in database"""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute("""
